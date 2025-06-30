@@ -32,6 +32,18 @@ or [Generic Interfaces](https://www.typescriptlang.org/docs/handbook/2/generics.
 
 Using the most commonly used API querySelector as an example. We have to write `DOM_Element::downcast` to cast.
 
+### Show trait 
+
+Now that the `Show` trait calls the `&Logger` trait object using dynamic dispath can affect performance.
+
+```moonbit 
+pub(open) trait Show {
+  output(Self, &Logger) -> Unit
+  to_string(Self) -> String = _
+}
+```
+
+
 ```moonbit 
 ///|
 #external
@@ -211,6 +223,14 @@ test {
 }
 ```
 
+### Show trait
+
+```moonbit 
+pub(open) trait Show {
+  fn[L : Logger] output(Self,L) -> Unit
+  to_string(Self) -> String = _
+}
+```
 
 ## Possible alternatives
 
