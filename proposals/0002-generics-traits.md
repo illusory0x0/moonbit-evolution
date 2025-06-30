@@ -119,19 +119,26 @@ trait Functor[A] {
 
 trait Monad[A] {
   fn[A,B] bind(Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise?
+  fn[A] pure(A) -> Self[A]
 }
 
-impl[A] Functor for FixedArray with map = @array.FixedArray::map
-impl[A] Monad for FixedArray with bind[A,B](self, f){
+impl[A] Functor for FixedArray with map(self, f) { ... }
+impl[A] Monad for FixedArray with[A,B] bind(self, f) {
   self.map(f).flatten()
 }
+impl[A] Monad for FixedArray with pure(a) {
+  [a]
+}
 
-impl[T] Functor for Result with map = @result.Result::map
-impl[T] Monad for Result with bind[T,F](self, f){
+impl[T] Functor for Result with[T,F] map(self, f) { ... }
+impl[T] Monad for Result with[T,F] bind(self, f) {
   match self {
     Ok(value) => f(value)
     Err(err) => err(err)
   }
+}
+impl[T] Monad for FixedArray with[T,F] pure(a) {
+  Ok(a)
 }
 ```
 
