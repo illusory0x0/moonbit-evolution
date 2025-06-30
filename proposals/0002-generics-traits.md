@@ -16,7 +16,7 @@ Although using `cast` function can solve some problems, it is not good practice 
 
 ## Motivation
 
-### API consistency
+### Check API consistency
 
 Right now Moonbit's trait doesn't support generic parameters, 
 which can lead to a lot of API inconsistencies when using generic data structures.
@@ -25,14 +25,25 @@ for example,
 [Moonbit core library](https://github.com/moonbitlang/core/issues?q=is%3Aissue%20label%3A%22consistency%20review%22) has 
 **29** consistency review issues, if we have **Generics Traits**, the compiler can check API consistency without human to code review.
 
-### DOM API
+### Improving JavaScript API Interoperability
 
 Many JavaScript APIs use [Generic Classes](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-classes) 
 or [Generic Interfaces](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-types).
 
 Using the most commonly used API querySelector as an example. We have to write `DOM_Element::downcast` to cast.
 
-### Show trait 
+[rescript webapi](https://github.com/TheSpyder/rescript-webapi/) using sophisticated techniques to emulate subtying and inheritance.
+
+[purescript-dom-classy](https://pursuit.purescript.org/packages/purescript-dom-classy/) using typeclass to make DOM API binding more ergonomic
+
+[jsoo dom](https://github.com/ocsigen/js_of_ocaml/blob/master/lib/js_of_ocaml/dom.ml) using OCaml object inheritance 
+to implement DOM API binding whose experience is closest to JavaScript.
+
+Moonbit's type system is much closer to PureScript, 
+and the experience with traits/typeclass is still quite good, 
+so it was necessary to enhance the ability of the trait.
+
+### Improve performance via avoiding dynamic dispath 
 
 Now that the `Show` trait calls the `&Logger` trait object using dynamic dispath can affect performance.
 
