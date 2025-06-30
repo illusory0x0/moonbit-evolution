@@ -117,7 +117,7 @@ trait Functor[A] {
   fn[A,B] map(Self[A], f : (A) -> B raise?) -> Self[B] raise?
 }
 
-trait Monad[A] {
+trait Monad[A] : Functor[A] {
   fn[A,B] bind(Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise?
   fn[A] pure(A) -> Self[A]
 }
