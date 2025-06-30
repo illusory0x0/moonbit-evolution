@@ -30,11 +30,11 @@ for example,
 Many JavaScript APIs use [Generic Classes](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-classes) 
 or [Generic Interfaces](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-types).
 
-Using the most commonly used API querySelector as an example. We have to write `DOM_Element::downcast` to cast.
+Using the most commonly used API `querySelector` as an example. We have to write `DOM_Element::downcast` to cast.
 
 [rescript webapi](https://github.com/TheSpyder/rescript-webapi/) using sophisticated techniques to emulate subtying and inheritance.
 
-[purescript-dom-classy](https://pursuit.purescript.org/packages/purescript-dom-classy/) using typeclass to make DOM API binding more ergonomic
+[purescript-dom-classy](https://pursuit.purescript.org/packages/purescript-dom-classy/) using typeclass to make DOM API binding more ergonomic.
 
 [jsoo dom](https://github.com/ocsigen/js_of_ocaml/blob/master/lib/js_of_ocaml/dom.ml) using OCaml object inheritance 
 to implement DOM API binding whose experience is closest to JavaScript.
