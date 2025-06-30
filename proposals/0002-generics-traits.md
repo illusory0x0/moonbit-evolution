@@ -114,9 +114,28 @@ Actually this `Functor` more similar to [traverse](https://hackage.haskell.org/p
 
 ```moonbit 
 trait Functor[A] {
-  fn[A,B] map(Self[A],f : (A) -> B raise?) -> Self[B] raise?
+  fn[A,B] map(Self[A], f : (A) -> B raise?) -> Self[B] raise?
+}
+
+trait Monad[A] {
+  fn[A,B] bind(Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise?
+}
+
+impl[A] Functor for FixedArray with map = @array.FixedArray::map
+impl[A] Monad for FixedArray with bind[A,B](self, f){
+  self.map(f).flatten()
+}
+
+impl[T] Functor for Result with map = @result.Result::map
+impl[T] Monad for Result with bind[T,F](self, f){
+  match self {
+    Ok(value) => f(value)
+    Err(err) => err(err)
+  }
 }
 ```
+
+with generic traits, we can list the list of such traits that types are meant to belong, and thus improve API consistency.
 
 ### querySelector Example
 
