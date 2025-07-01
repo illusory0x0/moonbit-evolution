@@ -137,33 +137,39 @@ Actually this `Functor` more similar to [traverse](https://hackage.haskell.org/p
 
 ```moonbit 
 trait Functor[A] {
-  fn[A,B] map(Self[A], f : (A) -> B raise?) -> Self[B] raise?
+  fn[B] map(self : Self[A], f : (A) -> B raise?) -> Self[B] raise?
 }
 
 trait Monad[A] : Functor[A] {
-  fn[A,B] bind(Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise?
-  fn[A] pure(A) -> Self[A]
-}
-
-impl[A] Functor for FixedArray with map(self, f) { ... }
-impl[A] Monad for FixedArray with[A,B] bind(self, f) {
-  self.map(f).flatten()
-}
-impl[A] Monad for FixedArray with pure(a) {
-  [a]
-}
-
-impl[T] Functor for Result with[T,F] map(self, f) { ... }
-impl[T] Monad for Result with[T,F] bind(self, f) {
-  match self {
-    Ok(value) => f(value)
-    Err(err) => err(err)
-  }
-}
-impl[T] Monad for FixedArray with[T,F] pure(a) {
-  Ok(a)
+  fn[B] bind(self : Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise?
+  pure(x : A) -> Self[A]
 }
 ```
+
+without type annotation impl.
+
+```moonbit 
+impl Functor for FixedArray with map(self, f) { ... }
+impl Monad for FixedArray with bind(self, f) { ... }
+impl Monad for FixedArray with pure(a) { ... }
+
+impl Functor for Result with map(self, f) { ... }
+impl Monad for Result with bind(self, f) { ... }
+impl Monad for Result with pure(a) { ... }
+```
+
+with type annotation impl.
+
+```moonbit 
+impl Functor for FixedArray with[A,B] map(self : Self[A], f : (A) -> B raise?) -> Self[B] raise? { ... }
+impl Monad for FixedArray with[A,B] bind(self : Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise? { ... }
+impl Monad for FixedArray with[A] pure(x : A) -> Self[A] { ... }
+
+impl Functor for Result with[A,B] map(self : Self[A], f : (A) -> B raise?) -> Self[B] raise? { ... }
+impl Monad for Result with[A,B] bind(self : Self[A], f : (A) -> Self[B] raise?) -> Self[B] raise? { ... }
+impl Monad for Result with[A] pure(x : A) -> Self[A] { ... }
+```
+
 
 with generic traits, we can list the list of such traits that types are meant to belong, and thus improve API consistency.
 
