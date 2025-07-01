@@ -167,6 +167,47 @@ impl[T] Monad for FixedArray with[T,F] pure(a) {
 
 with generic traits, we can list the list of such traits that types are meant to belong, and thus improve API consistency.
 
+### Iterable Example 
+
+We can define `Iterable` trait to `derive` something like `C#` [IEnumerable<T>](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1?view=net-9.0) or `Haskell` [Foldable](https://hackage.haskell.org/package/base-4.21.0.0/docs/Prelude.html#t:Foldable) reduce many boilerplates and keep API consistency.
+
+Use traits as API design guidelines, just as we did with traits that weren't generalized before.
+
+C++ using [Range Concepts](https://en.cppreference.com/w/cpp/header/ranges.html#Concepts) and [Iterator Concepts](https://en.cppreference.com/w/cpp/iterator.html) as API design guidelines, If someone implement this convention, then they enjoy the benefits of [algorithm](https://en.cppreference.com/w/cpp/algorithm.html) which is common data structures operation.
+
+```moonbit
+
+trait Iterable[A] {
+  iter(Self[A]) -> Iter[A]
+  each(Self[A], f : (A) -> Unit raise?) -> Unit raise? = _ 
+  eachi(Self[A], f : (Int,A) -> Unit raise?) -> Unit raise? = _
+  fn[S] fold(Self[A], init~ : S, f : (S,A) -> S raise?) -> S raise? = _
+  find_first(Self[A], f : (A) -> Bool) -> T? = _
+  contains(Self[A],value : A) -> Bool = _ 
+}
+
+trait KnownSizedIterable[A] : Iterable[A] {
+  size(Self[A]) -> Int 
+  collect(Self[A]) -> Array[A] = _ 
+  // This performance is better than `Iter::collect`
+  to_array(Self[A]) -> Array[A] = _ 
+  to_fixedarray(Self[A]) -> FixedArray[A] = _ 
+
+}
+
+```
+
+we also can improve performance for `Array::push_iter`.
+
+```moonbit 
+fn[A,I : KnownSizedIterable] Array::push_iter(self : Self[A], xs : I[A]) -> Unit {
+  self.reserve_capacity(self.length() + xs.size())
+  for x in xs {
+    self.push(x)
+  }
+}
+```
+
 ### querySelector Example
 
 support generics method in traits can reduce many `downcast` call.
