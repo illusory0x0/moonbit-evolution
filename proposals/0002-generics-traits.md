@@ -43,9 +43,9 @@ Moonbit's type system is much closer to PureScript,
 and the experience with traits/typeclass is still quite good, 
 so it was necessary to enhance the ability of the trait.
 
-### Improve performance via avoiding dynamic dispath 
+### Improve performance via avoiding dynamic dispatch 
 
-Now that the `Show` trait calls the `&Logger` trait object using dynamic dispath can affect performance.
+Now that the `Show` trait calls the `&Logger` trait object using dynamic dispatch can affect performance.
 
 ```moonbit 
 pub(open) trait Show {
@@ -71,7 +71,7 @@ trait DOM_Element {
 extern "js" fn Element::querySelector(
   self : Element,
   selectors : String
-) -> Element = "(self,selecter) => self.querySelector(selecter)"
+) -> Element = "(self,selector) => self.querySelector(selector)"
 
 ///|
 fn[A, B] coerce(x : A) -> B = "%identity"
@@ -227,7 +227,7 @@ trait DOM_Element {
 extern "js" fn Element::querySelector(
   self : Element,
   selectors : String
-) -> Element = "(self,selecter) => self.querySelector(selecter)"
+) -> Element = "(self,selector) => self.querySelector(selector)"
 
 ///|
 fn[A, B] coerce(x : A) -> B = "%identity"
